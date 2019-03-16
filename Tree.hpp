@@ -12,13 +12,14 @@
 
 class BTree{
 private:
+    int counter = 0;
     struct TreeNode{
         int data;
         TreeNode* child_left;
         TreeNode* child_right;
     };
-    TreeNode* root;
-    void Add_Num_Private(TreeNode* node ,int data);
+    TreeNode* root_node;
+    void insertPrivate(TreeNode* node ,int data);
     void printInOrderPrivate(TreeNode* node);
     TreeNode* parentPrivate(TreeNode* node ,int data);
     int leftPrivate(TreeNode* node, int data);
@@ -27,16 +28,25 @@ private:
     void removeRootData();
     void removeData(TreeNode* node, TreeNode* removeNode, bool left);
     int SmallestPrivate(TreeNode* node);
+    void removeRoot(TreeNode* node);
+    int sizePrivate();
+    TreeNode* target(TreeNode* node, int data);
+    bool containsPrivate(TreeNode* node,int data);
+    int rootPrivate();
 public:
     BTree();
     ~BTree();
     TreeNode* Create_Node(int data);
-    void Add_Num(int data);
-    void printInOrder();
-    TreeNode* parent(int data);
+    void insert(int data);
+    void print();
+    TreeNode* parentChild(int data);
+    int parent(int data);
     int left(int data);
     int right(int data);
     void remove(int data);
     int Smallest();
+    int size();
+    bool contains(int data);
+    int root();
 
 };

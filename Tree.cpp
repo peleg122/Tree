@@ -10,13 +10,19 @@ using namespace std;
 
 
 BTree::BTree() {
-    root = NULL;
+    root_node = NULL;
 }
 BTree::~BTree() {
-    if(root!=NULL){
-        //remove(root->child_left);
-        //remove(root->child_right);
-        delete root;
+    removeRoot(root_node);
+}
+void BTree::removeRoot(TreeNode* node) {
+    if(node != NULL){
+        if(node->child_left != NULL){
+            removeRoot(node->child_left);
+        }if(node->child_right != NULL){
+            removeRoot(node->child_right);
+        }
+        delete node;
     }
 }
 
@@ -25,25 +31,27 @@ BTree::TreeNode* BTree::Create_Node(int data){
     node->data = data;
     node->child_left= NULL;
     node->child_right = NULL;
+    counter++;
 
     return node;
 }
-void BTree::Add_Num(int data) {
-    Add_Num_Private(root, data);
+void BTree::insert(int data) {
+    insertPrivate(root_node, data);
+
 }
-void BTree::Add_Num_Private(TreeNode* node, int data) {
-    if(root == NULL){
-        root = Create_Node(data);
+void BTree::insertPrivate(TreeNode* node, int data) {
+    if(root_node == NULL){
+        root_node = Create_Node(data);
     }
     else if(node->data > data){
         if(node->child_left != NULL){
-            Add_Num_Private(node->child_left, data);
+            insertPrivate(node->child_left, data);
         } else{
             node->child_left= Create_Node(data);
         }
     }else if(node->data < data){
         if(node->child_right != NULL){
-            Add_Num_Private(node->child_right, data);
+            insertPrivate(node->child_right, data);
         } else{
             node->child_right= Create_Node(data);
         }
@@ -51,11 +59,11 @@ void BTree::Add_Num_Private(TreeNode* node, int data) {
         cout<<"the key " <<data<< " is alread in the tree!"<<endl;
     }
 }
-void BTree::printInOrder() {
-    printInOrderPrivate(root);
+void BTree::print() {
+    printInOrderPrivate(root_node);
 }
 void BTree::printInOrderPrivate(TreeNode* node) {
-    if(root != NULL){
+    if(root_node != NULL){
         if(node->child_left != NULL){
             printInOrderPrivate(node->child_left);
         }
@@ -67,9 +75,32 @@ void BTree::printInOrderPrivate(TreeNode* node) {
         cout<<"Empty Tree"<<endl;
     }
 }
-BTree::TreeNode* BTree::parent(int data) {
-    return parentPrivate(root,data);
+BTree::TreeNode* BTree::parentChild(int data) {
+    return parentPrivate(root_node,data);
 }
+BTree::TreeNode* BTree::target(TreeNode *node, int data) {
+    TreeNode* temp = NULL;
+    while(node!= NULL){
+        if(data <node->data){
+            temp = node;
+            node = node->child_left;
+        }else if( data > node->data){
+            temp = node;
+            node = node->child_right;
+        }else{
+            return temp;
+        }
+    }
+}
+int BTree::parent(int data){
+    if(target(root_node, data) != NULL){
+        return target(root_node, data)->data;
+    }else{
+        return -1;
+    }
+
+}
+
 
 BTree::TreeNode* BTree::parentPrivate(TreeNode* node, int data) {
     if(node != NULL) {
@@ -87,7 +118,7 @@ BTree::TreeNode* BTree::parentPrivate(TreeNode* node, int data) {
     }
 }
 int BTree::left(int data) {
-    return leftPrivate(parent(data) , data);
+    return leftPrivate(parentChild(data) , data);
 }
 
 int BTree::leftPrivate(BTree::TreeNode *node, int data) {
@@ -102,7 +133,7 @@ int BTree::leftPrivate(BTree::TreeNode *node, int data) {
     }
 }
 int BTree::right(int data) {
-    return rightPrivate(parent(data) , data);
+    return rightPrivate(parentChild(data) , data);
 }
 
 int BTree::rightPrivate(BTree::TreeNode *node, int data) {
@@ -119,11 +150,11 @@ int BTree::rightPrivate(BTree::TreeNode *node, int data) {
 
 void BTree::remove(int data){
     cout<<"Removing numer : " << data<< "...";
-    removePrivate(root, data);
+    removePrivate(root_node, data);
 }
 void BTree::removePrivate(TreeNode* node, int data){
-   if(root != NULL){
-       if(root->data == data){
+   if(root_node != NULL){
+       if(root_node->data == data){
            removeRootData();
        }else{
            if(node->data > data && node->child_left != NULL){
@@ -143,64 +174,40 @@ void BTree::removePrivate(TreeNode* node, int data){
    }
 }
 void BTree::removeRootData() {
-    if(root != NULL){
-        TreeNode* delNode = root;
-        int rootData = root->data;
+    if(root_node != NULL){
+        TreeNode* delNode = root_node;
+        int rootData = root_node->data;
         int smallestDataOnRight;
 
         //case 1 - 0 children
-        if(root->child_left == NULL && root->child_right ==NULL){
-            root = NULL;
+        if(root_node->child_left == NULL && root_node->child_right ==NULL){
+            root_node = NULL;
+            counter--;
             delete delNode;
         } // case 2 - 1 child;
-        else if(root->child_left == NULL && root->child_right != NULL){
-            root = root->child_right;
+        else if(root_node->child_left == NULL && root_node->child_right != NULL){
+            root_node = root_node->child_right;
             delNode->child_right = NULL;
+            counter--;
             delete delNode;
-        }else if(root->child_right == NULL && root->child_left != NULL){
-            root = root->child_left;
+        }else if(root_node->child_right == NULL && root_node->child_left != NULL){
+            root_node = root_node->child_left;
             delNode->child_left = NULL;
+            counter--;
             delete delNode;
         }// case 3 - 2 children
         else{
-            smallestDataOnRight = SmallestPrivate(root->child_right);
-            removePrivate(root, smallestDataOnRight);
-            root->data=smallestDataOnRight;
+            smallestDataOnRight = SmallestPrivate(root_node->child_right);
+            removePrivate(root_node, smallestDataOnRight);
+            root_node->data=smallestDataOnRight;
         }
     }else{
         cout<< "Tree root is empty"<< endl;
     }
 }
-/*void BTree::removeData(TreeNode* node, TreeNode* removeNode, bool left){
-    if(root !=NULL){
-        TreeNode* delNode;
-        int remData = removeNode->data;
-        int smallestOnRight;
-        if(removeNode->child_left == NULL && removeNode->child_right != NULL){
-            delNode = removeNode;
-            left == true ? node->child_left = NULL : node->child_right = NULL;
-            delete delNode;
-        }else if(removeNode->child_left == NULL && removeNode->child_right != NULL){
-            left == true ? node->child_left = removeNode->child_right : node->child_right = removeNode->child_right;
-            removeNode->child_right = NULL;
-            delNode = removeNode;
-            delete delNode;
-        }else if(removeNode->child_right == NULL && removeNode->child_left != NULL){
-            left == true ? node->child_left = removeNode->child_left : node->child_right = removeNode->child_left;
-            removeNode->child_left = NULL;
-            delNode = removeNode;
-            delete delNode;
-        }else {
-            smallestOnRight =SmallestPrivate(removeNode->child_right);
-            removePrivate(removeNode ,smallestOnRight);
-            removeNode->data = smallestOnRight;
-        }
-    }else{
-        cout<< "Tree is empty!"<<endl;
-    }
-}*/
+
 void BTree::removeData(TreeNode *node, TreeNode *removeNode, bool left) {
-    if(root != NULL){
+    if(root_node != NULL){
         TreeNode* delNode;
         int remData = removeNode->data;
         int smallestInRight;
@@ -208,18 +215,21 @@ void BTree::removeData(TreeNode *node, TreeNode *removeNode, bool left) {
             delNode = removeNode;
             left == true ? node->child_left = NULL :
                     node->child_right = NULL;
+            counter--;
             delete delNode;
         }else if(removeNode->child_left == NULL && removeNode->child_right != NULL){
             left == true ? node->child_left = removeNode->child_right :
                     node->child_right = removeNode->child_right;
             removeNode->child_right = NULL;
             delNode = removeNode;
+            counter--;
             delete delNode;
         }else if(removeNode->child_left != NULL && removeNode->child_right == NULL){
             left == true ? node->child_left = removeNode->child_left :
                     node->child_right = removeNode->child_left;
             removeNode->child_left = NULL;
             delNode = removeNode;
+            counter--;
             delete delNode;
         }else{
             smallestInRight = SmallestPrivate(removeNode->child_right);
@@ -229,10 +239,10 @@ void BTree::removeData(TreeNode *node, TreeNode *removeNode, bool left) {
     }
 }
 int BTree::Smallest() {
-    return SmallestPrivate(root);
+    return SmallestPrivate(root_node);
 }
 int BTree::SmallestPrivate(TreeNode* node) {
-    if(root == NULL){
+    if(root_node == NULL){
         cout<<"Empty Tree!"<<endl;
         return -1;
     }else{
@@ -241,5 +251,46 @@ int BTree::SmallestPrivate(TreeNode* node) {
         }else{
             return node->data;
         }
+    }
+}
+int BTree::size(){
+    return sizePrivate();
+}
+int BTree::sizePrivate(){
+    /*if(node !=NULL){
+        if(node->child_left != NULL){
+            sizePrivate(node->child_left);
+        }if(node->child_right != NULL){
+            sizePrivate(node->child_right);
+        }
+        counter++;
+    }*/
+    return counter;
+}
+bool BTree::contains(int data){
+    return containsPrivate(root_node, data);
+}
+bool BTree::containsPrivate(TreeNode* node, int data) {
+    if(node !=NULL){
+        if(node->data== data){
+            return true;
+        }else if(node->data > data){
+            containsPrivate(node->child_left, data);
+        }else if(node->data < data){
+            containsPrivate(node->child_right, data);
+        }
+    }else{
+        return false;
+    }
+}
+
+int BTree::root() {
+    return rootPrivate();
+}
+int BTree::rootPrivate() {
+    if(root_node != NULL) {
+        return root_node->data;
+    }else{
+        return -1;
     }
 }
