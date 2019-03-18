@@ -57,6 +57,7 @@ void Tree::insertPrivate(TreeNode* node, int data) {
             node->child_right= Create_Node(data);
         }
     }else{
+        
         cout<<"the key " <<data<< " is alread in the tree!"<<endl;
     }
 }
@@ -73,6 +74,7 @@ void Tree::printInOrderPrivate(TreeNode* node) {
             printInOrderPrivate(node->child_right);
         }
     } else{
+        throw std::invalid_argument( "Empty Tree" );
         cout<<"Empty Tree"<<endl;
     }
 }
@@ -97,6 +99,7 @@ int Tree::parent(int data){
     if(target(root_node, data) != NULL){
         return target(root_node, data)->data;
     }else{
+        throw std::invalid_argument( "No Parent!" );
         return -1;
     }
 
