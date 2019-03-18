@@ -142,7 +142,8 @@ int Tree::rightPrivate(TreeNode *node, int data) {
         if(node->child_right!= NULL){
             return node->child_right == NULL ? throw std::invalid_argument( "Right Child missing" ) : node->child_right->data;
         } else{
-            return throw std::invalid_argument( "Right Child missing" );
+            std::invalid_argument( "Right Child missing" );
+            //return -1;
         }
     }else{
         throw std::invalid_argument( "Right child missing" );
