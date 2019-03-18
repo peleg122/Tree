@@ -57,8 +57,8 @@ void Tree::insertPrivate(TreeNode* node, int data) {
             node->child_right= Create_Node(data);
         }
     }else{
-        
-        cout<<"the key " <<data<< " is alread in the tree!"<<endl;
+        throw std::invalid_argument( "Data Found already!" );
+        cout<<"the data " <<data<< " is alread in the tree!"<<endl;
     }
 }
 void Tree::print() {
@@ -91,6 +91,7 @@ Tree::TreeNode* Tree::target(TreeNode *node, int data) {
             temp = node;
             node = node->child_right;
         }else{
+            throw std::invalid_argument( "No Parent!" );
             return temp;
         }
     }
@@ -118,6 +119,7 @@ Tree::TreeNode* Tree::parentPrivate(TreeNode* node, int data) {
             }
         }
     }else{
+        throw std::invalid_argument( "No Parent!" );
         return NULL;
     }
 }
