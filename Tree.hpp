@@ -10,7 +10,7 @@
 // Created by Peleg on 15/03/2019.
 //
 namespace ariel{
-class BTree{
+class Tree{
 private:
     int counter = 0;
     struct TreeNode{
@@ -34,8 +34,8 @@ private:
     bool containsPrivate(TreeNode* node,int data);
     int rootPrivate();
 public:
-    BTree();
-    ~BTree();
+    Tree();
+    ~Tree();
     TreeNode* Create_Node(int data);
     void insert(int data);
     void print();
