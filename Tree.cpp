@@ -125,12 +125,12 @@ int Tree::left(int data) {
 int Tree::leftPrivate(TreeNode *node, int data) {
     if(node!= NULL){
         if(node->child_left!= NULL){
-            return node->child_left == NULL ? -1 : node->child_left->data;
+            return node->child_left == NULL ? throw std::invalid_argument( "Left Child missing" ) : node->child_left->data;
         } else{
-            return -1;
+            throw std::invalid_argument( "Left Child missing" );
         }
     }else{
-        cout<<"Left Child Missing"<<endl;
+        throw std::invalid_argument( "Left Child missing" );
     }
 }
 int Tree::right(int data) {
@@ -140,12 +140,12 @@ int Tree::right(int data) {
 int Tree::rightPrivate(TreeNode *node, int data) {
     if(node!= NULL){
         if(node->child_right!= NULL){
-            return node->child_right == NULL ? -1 : node->child_right->data;
+            return node->child_right == NULL ? throw std::invalid_argument( "Right Child missing" ) : node->child_right->data;
         } else{
-            return -1;
+            return throw std::invalid_argument( "Right Child missing" );
         }
     }else{
-        cout<<"Right Child Missing"<<endl;
+        throw std::invalid_argument( "Right child missing" );
     }
 }
 
@@ -167,11 +167,11 @@ void Tree::removePrivate(TreeNode* node, int data){
                removeData(node, node->child_right, false) :
                removePrivate(node->child_right, data);
            }else{
-               cout<<data << "not in the tree";
+               throw std::invalid_argument( "Not in Tree" );
            }
        }
    }else{
-       cout<< "Empty Tree!"<<endl;
+       throw std::invalid_argument( "Tree is Empty" );
    }
 }
 void Tree::removeRootData() {
@@ -203,7 +203,7 @@ void Tree::removeRootData() {
             root_node->data=smallestDataOnRight;
         }
     }else{
-        cout<< "Tree root is empty"<< endl;
+        throw std::invalid_argument( "Tree Root Missing" );
     }
 }
 
@@ -244,7 +244,7 @@ int Tree::Smallest() {
 }
 int Tree::SmallestPrivate(TreeNode* node) {
     if(root_node == NULL){
-        cout<<"Empty Tree!"<<endl;
+        throw std::invalid_argument( "Empty Tree!" );
         return -1;
     }else{
         if(node->child_left != NULL){
@@ -281,6 +281,7 @@ bool Tree::containsPrivate(TreeNode* node, int data) {
             containsPrivate(node->child_right, data);
         }
     }else{
+        throw std::invalid_argument( "Not Contains!" );
         return false;
     }
 }
@@ -292,6 +293,7 @@ int Tree::rootPrivate() {
     if(root_node != NULL) {
         return root_node->data;
     }else{
+        throw std::invalid_argument( "No Root!" );
         return -1;
     }
 }
