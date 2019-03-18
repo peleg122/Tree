@@ -9,7 +9,7 @@
 //
 // Created by Peleg on 15/03/2019.
 //
-
+namespace ariel{
 class BTree{
 private:
     int counter = 0;
@@ -50,3 +50,4 @@ public:
     int root();
 
 };
+}
