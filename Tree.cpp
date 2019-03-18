@@ -9,13 +9,13 @@ using namespace std;
 
 
 
-BTree::BTree() {
+Tree::Tree() {
     root_node = NULL;
 }
-BTree::~BTree() {
+Tree::~Tree() {
     removeRoot(root_node);
 }
-void BTree::removeRoot(TreeNode* node) {
+void Tree::removeRoot(TreeNode* node) {
     if(node != NULL){
         if(node->child_left != NULL){
             removeRoot(node->child_left);
@@ -26,7 +26,7 @@ void BTree::removeRoot(TreeNode* node) {
     }
 }
 
-BTree::TreeNode* BTree::Create_Node(int data){
+Tree::TreeNode* Tree::Create_Node(int data){
     TreeNode* node = new TreeNode;
     node->data = data;
     node->child_left= NULL;
@@ -35,11 +35,11 @@ BTree::TreeNode* BTree::Create_Node(int data){
 
     return node;
 }
-void BTree::insert(int data) {
+void Tree::insert(int data) {
     insertPrivate(root_node, data);
 
 }
-void BTree::insertPrivate(TreeNode* node, int data) {
+void Tree::insertPrivate(TreeNode* node, int data) {
     if(root_node == NULL){
         root_node = Create_Node(data);
     }
@@ -59,10 +59,10 @@ void BTree::insertPrivate(TreeNode* node, int data) {
         cout<<"the key " <<data<< " is alread in the tree!"<<endl;
     }
 }
-void BTree::print() {
+void Tree::print() {
     printInOrderPrivate(root_node);
 }
-void BTree::printInOrderPrivate(TreeNode* node) {
+void Tree::printInOrderPrivate(TreeNode* node) {
     if(root_node != NULL){
         if(node->child_left != NULL){
             printInOrderPrivate(node->child_left);
@@ -75,10 +75,10 @@ void BTree::printInOrderPrivate(TreeNode* node) {
         cout<<"Empty Tree"<<endl;
     }
 }
-BTree::TreeNode* BTree::parentChild(int data) {
+Tree::TreeNode* Tree::parentChild(int data) {
     return parentPrivate(root_node,data);
 }
-BTree::TreeNode* BTree::target(TreeNode *node, int data) {
+Tree::TreeNode* Tree::target(TreeNode *node, int data) {
     TreeNode* temp = NULL;
     while(node!= NULL){
         if(data <node->data){
@@ -92,7 +92,7 @@ BTree::TreeNode* BTree::target(TreeNode *node, int data) {
         }
     }
 }
-int BTree::parent(int data){
+int Tree::parent(int data){
     if(target(root_node, data) != NULL){
         return target(root_node, data)->data;
     }else{
@@ -102,7 +102,7 @@ int BTree::parent(int data){
 }
 
 
-BTree::TreeNode* BTree::parentPrivate(TreeNode* node, int data) {
+Tree::TreeNode* Tree::parentPrivate(TreeNode* node, int data) {
     if(node != NULL) {
         if (node->data == data) {
             return node;
@@ -117,11 +117,11 @@ BTree::TreeNode* BTree::parentPrivate(TreeNode* node, int data) {
         return NULL;
     }
 }
-int BTree::left(int data) {
+int Tree::left(int data) {
     return leftPrivate(parentChild(data) , data);
 }
 
-int BTree::leftPrivate(BTree::TreeNode *node, int data) {
+int Tree::leftPrivate(TreeNode *node, int data) {
     if(node!= NULL){
         if(node->child_left!= NULL){
             return node->child_left == NULL ? -1 : node->child_left->data;
@@ -132,11 +132,11 @@ int BTree::leftPrivate(BTree::TreeNode *node, int data) {
         cout<<"Left Child Missing"<<endl;
     }
 }
-int BTree::right(int data) {
+int Tree::right(int data) {
     return rightPrivate(parentChild(data) , data);
 }
 
-int BTree::rightPrivate(BTree::TreeNode *node, int data) {
+int Tree::rightPrivate(TreeNode *node, int data) {
     if(node!= NULL){
         if(node->child_right!= NULL){
             return node->child_right == NULL ? -1 : node->child_right->data;
@@ -148,11 +148,11 @@ int BTree::rightPrivate(BTree::TreeNode *node, int data) {
     }
 }
 
-void BTree::remove(int data){
+void Tree::remove(int data){
     cout<<"Removing numer : " << data<< "...";
     removePrivate(root_node, data);
 }
-void BTree::removePrivate(TreeNode* node, int data){
+void Tree::removePrivate(TreeNode* node, int data){
    if(root_node != NULL){
        if(root_node->data == data){
            removeRootData();
@@ -173,7 +173,7 @@ void BTree::removePrivate(TreeNode* node, int data){
        cout<< "Empty Tree!"<<endl;
    }
 }
-void BTree::removeRootData() {
+void Tree::removeRootData() {
     if(root_node != NULL){
         TreeNode* delNode = root_node;
         int rootData = root_node->data;
@@ -206,7 +206,7 @@ void BTree::removeRootData() {
     }
 }
 
-void BTree::removeData(TreeNode *node, TreeNode *removeNode, bool left) {
+void Tree::removeData(TreeNode *node, TreeNode *removeNode, bool left) {
     if(root_node != NULL){
         TreeNode* delNode;
         int remData = removeNode->data;
@@ -238,10 +238,10 @@ void BTree::removeData(TreeNode *node, TreeNode *removeNode, bool left) {
         }
     }
 }
-int BTree::Smallest() {
+int Tree::Smallest() {
     return SmallestPrivate(root_node);
 }
-int BTree::SmallestPrivate(TreeNode* node) {
+int Tree::SmallestPrivate(TreeNode* node) {
     if(root_node == NULL){
         cout<<"Empty Tree!"<<endl;
         return -1;
@@ -253,10 +253,10 @@ int BTree::SmallestPrivate(TreeNode* node) {
         }
     }
 }
-int BTree::size(){
+int Tree::size(){
     return sizePrivate();
 }
-int BTree::sizePrivate(){
+int Tree::sizePrivate(){
     /*if(node !=NULL){
         if(node->child_left != NULL){
             sizePrivate(node->child_left);
@@ -267,10 +267,10 @@ int BTree::sizePrivate(){
     }*/
     return counter;
 }
-bool BTree::contains(int data){
+bool Tree::contains(int data){
     return containsPrivate(root_node, data);
 }
-bool BTree::containsPrivate(TreeNode* node, int data) {
+bool Tree::containsPrivate(TreeNode* node, int data) {
     if(node !=NULL){
         if(node->data== data){
             return true;
@@ -284,10 +284,10 @@ bool BTree::containsPrivate(TreeNode* node, int data) {
     }
 }
 
-int BTree::root() {
+int Tree::root() {
     return rootPrivate();
 }
-int BTree::rootPrivate() {
+int Tree::rootPrivate() {
     if(root_node != NULL) {
         return root_node->data;
     }else{
