@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include "Tree.hpp"
 using namespace std;
+using namespace ariel;
 
 
 
