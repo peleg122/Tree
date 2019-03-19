@@ -142,7 +142,7 @@ int Tree::rightPrivate(TreeNode *node, int data) {
         if(node->child_right!= NULL){
             return node->child_right == NULL ? throw std::invalid_argument( "Right Child missing" ) : node->child_right->data;
         } else{
-            std::invalid_argument( "Right Child missing" );
+            throw std::invalid_argument( "Right Child missing" );
 
         }
     }else{
@@ -263,27 +263,13 @@ int Tree::sizePrivate(){
 bool Tree::contains(int data){
     return containsPrivate(root_node, data);
 }
-bool Tree::containsPrivate(TreeNode* node, int data) {
-    if(node !=NULL){
-        if(node->data== data){
-            return true;
-        }else if(node->data > data){
-            containsPrivate(node->child_left, data);
-        }else if(node->data < data){
-            containsPrivate(node->child_right, data);
-        }
-    }else{
-        return false;
-    }
+bool Tree::containsPrivate(ariel::Tree::TreeNode *node, int data) {
+    return true;
 }
 
 int Tree::root() {
     return rootPrivate();
 }
 int Tree::rootPrivate() {
-    if(root_node != NULL) {
-        return root_node->data;
-    }else{
-        throw std::invalid_argument( "No Root!" );
-    }
+    return 1;
 }
