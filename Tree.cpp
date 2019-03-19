@@ -58,7 +58,6 @@ void Tree::insertPrivate(TreeNode* node, int data) {
         }
     }else{
         throw std::invalid_argument( "Data Found already!" );
-        cout<<"the data " <<data<< " is alread in the tree!"<<endl;
     }
 }
 void Tree::print() {
@@ -75,7 +74,6 @@ void Tree::printInOrderPrivate(TreeNode* node) {
         }
     } else{
         throw std::invalid_argument( "Empty Tree" );
-        cout<<"Empty Tree"<<endl;
     }
 }
 Tree::TreeNode* Tree::parentChild(int data) {
@@ -100,7 +98,6 @@ int Tree::parent(int data){
         return target(root_node, data)->data;
     }else{
         throw std::invalid_argument( "No Parent!" );
-        return -1;
     }
 
 }
@@ -119,7 +116,6 @@ Tree::TreeNode* Tree::parentPrivate(TreeNode* node, int data) {
         }
     }else{
         throw std::invalid_argument( "No Parent!" );
-        return NULL;
     }
 }
 int Tree::left(int data) {
@@ -147,7 +143,7 @@ int Tree::rightPrivate(TreeNode *node, int data) {
             return node->child_right == NULL ? throw std::invalid_argument( "Right Child missing" ) : node->child_right->data;
         } else{
             std::invalid_argument( "Right Child missing" );
-            //return -1;
+
         }
     }else{
         throw std::invalid_argument( "Right child missing" );
@@ -185,12 +181,12 @@ void Tree::removeRootData() {
         int rootData = root_node->data;
         int smallestDataOnRight;
 
-        //case 1 - 0 children
+        //0 children
         if(root_node->child_left == NULL && root_node->child_right ==NULL){
             root_node = NULL;
             counter--;
             delete delNode;
-        } // case 2 - 1 child;
+        } //1 child;
         else if(root_node->child_left == NULL && root_node->child_right != NULL){
             root_node = root_node->child_right;
             delNode->child_right = NULL;
@@ -201,7 +197,7 @@ void Tree::removeRootData() {
             delNode->child_left = NULL;
             counter--;
             delete delNode;
-        }// case 3 - 2 children
+        }//2 children
         else{
             smallestDataOnRight = SmallestPrivate(root_node->child_right);
             removePrivate(root_node, smallestDataOnRight);
@@ -250,7 +246,6 @@ int Tree::Smallest() {
 int Tree::SmallestPrivate(TreeNode* node) {
     if(root_node == NULL){
         throw std::invalid_argument( "Empty Tree!" );
-        return -1;
     }else{
         if(node->child_left != NULL){
             return SmallestPrivate(node->child_left);
@@ -263,14 +258,6 @@ int Tree::size(){
     return sizePrivate();
 }
 int Tree::sizePrivate(){
-    /*if(node !=NULL){
-        if(node->child_left != NULL){
-            sizePrivate(node->child_left);
-        }if(node->child_right != NULL){
-            sizePrivate(node->child_right);
-        }
-        counter++;
-    }*/
     return counter;
 }
 bool Tree::contains(int data){
@@ -298,6 +285,5 @@ int Tree::rootPrivate() {
         return root_node->data;
     }else{
         throw std::invalid_argument( "No Root!" );
-        return -1;
     }
 }
