@@ -91,7 +91,6 @@ Tree::TreeNode* Tree::target(TreeNode *node, int data) {
             temp = node;
             node = node->child_right;
         }else{
-            throw std::invalid_argument( "No Parent!" );
             return temp;
         }
     }
@@ -160,25 +159,25 @@ void Tree::remove(int data){
     removePrivate(root_node, data);
 }
 void Tree::removePrivate(TreeNode* node, int data){
-   if(root_node != NULL){
-       if(root_node->data == data){
-           removeRootData();
-       }else{
-           if(node->data > data && node->child_left != NULL){
-               node->child_left->data == data ?
-               removeData(node, node->child_left, true) :
-               removePrivate(node->child_left, data);
-           }else if(node->data < data && node->child_right != NULL){
-               node->child_right->data == data ?
-               removeData(node, node->child_right, false) :
-               removePrivate(node->child_right, data);
-           }else{
-               throw std::invalid_argument( "Not in Tree" );
-           }
-       }
-   }else{
-       throw std::invalid_argument( "Tree is Empty" );
-   }
+    if(root_node != NULL){
+        if(root_node->data == data){
+            removeRootData();
+        }else{
+            if(node->data > data && node->child_left != NULL){
+                node->child_left->data == data ?
+                removeData(node, node->child_left, true) :
+                removePrivate(node->child_left, data);
+            }else if(node->data < data && node->child_right != NULL){
+                node->child_right->data == data ?
+                removeData(node, node->child_right, false) :
+                removePrivate(node->child_right, data);
+            }else{
+                throw std::invalid_argument( "Not in Tree" );
+            }
+        }
+    }else{
+        throw std::invalid_argument( "Tree is Empty" );
+    }
 }
 void Tree::removeRootData() {
     if(root_node != NULL){
@@ -287,7 +286,6 @@ bool Tree::containsPrivate(TreeNode* node, int data) {
             containsPrivate(node->child_right, data);
         }
     }else{
-        throw std::invalid_argument( "Not Contains!" );
         return false;
     }
 }
