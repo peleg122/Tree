@@ -280,5 +280,9 @@ int Tree::root() {
     return rootPrivate();
 }
 int Tree::rootPrivate() {
-    return 1;
+    if(root_node != NULL) {
+        return root_node->data;
+    }else{
+        throw std::invalid_argument( "No Root!" );
+    }
 }
