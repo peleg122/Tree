@@ -264,7 +264,16 @@ bool Tree::contains(int data){
     return containsPrivate(root_node, data);
 }
 bool Tree::containsPrivate(ariel::Tree::TreeNode *node, int data) {
-    return true;
+        if(node != NULL){
+            if(node->data== data){
+                return true;
+            }else if(node->data > data){
+                containsPrivate(node->child_left, data);
+            }else if(node->data < data){
+                containsPrivate(node->child_right, data);
+            }
+        }
+        return false;
 }
 
 int Tree::root() {
