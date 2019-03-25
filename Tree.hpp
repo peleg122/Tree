@@ -12,7 +12,7 @@
 namespace ariel{
     class Tree{
     private:
-        int counter = 1;
+        int counter = 0;
         struct TreeNode{
             int data;
             TreeNode* child_left;
