@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cstdlib>
 #include "Tree.hpp"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreturn-type"
 using namespace std;
 using namespace ariel;
 
@@ -264,9 +266,9 @@ bool Tree::contains(int data){
     return containsPrivate(root_node, data);
 }
 bool Tree::containsPrivate(ariel::Tree::TreeNode *node, int data) {
-    if(node == NULL)
+    if(node == NULL) {
         return false;
-    if(node->data > data) {
+    }else if(node->data > data) {
         containsPrivate(node->child_left, data);
     }else if(node->data < data) {
         containsPrivate(node->child_right, data);
@@ -285,3 +287,4 @@ int Tree::rootPrivate() {
         throw std::invalid_argument( "No Root!" );
     }
 }
+#pragma clang diagnostic pop
